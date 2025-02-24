@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar Menu Titik Ngopi ☕</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .slider {
+            position: relative;
+            width: 100%;
+            max-width: 100%;
+            overflow: hidden;
+        }
+
+        .slides {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .slides img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+        }
+
+        .navigation {
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            transform: translateY(-50%);
+        }
+
+        .navigation button {
+            background-color: rgba(0, 0, 0, 0.5);
+            border: none;
+            color: white;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        @media (min-width: 768px) {
+            .navigation button {
+                padding: 15px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .slides img {
+                width: 100%;
+                max-width: 1024px;
+                /* Sesuaikan dengan lebar maksimum yang diinginkan untuk breakpoint lg */
+                margin: 0 auto;
+                /* Untuk membuat gambar tetap di tengah */
+            }
+
+            .navigation button {
+                padding: 20px;
+            }
+        }
+
+        @media (min-width: 1280px) {
+            .slides img {
+                max-width: 1280px;
+                /* Sesuaikan dengan lebar maksimum yang diinginkan untuk breakpoint xl */
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="slider">
+        <div class="slides">
+            <img src="/asset/image/ChaHaeIn.jpg" alt="cha hae in">
+            <img src="/asset/image/ChaHaeIn2.jpg" alt="cha hae in">
+            <img src="/asset/image/ChaHaeIn3.jpg" alt="cha hae in">
+            <img src="/asset/image/ChaHaeIn4.jpg" alt="cha hae in">
+        </div>
+        <div class="navigation">
+            <button id="prev">&#10094;</button>
+            <button id="next">&#10095;</button>
+        </div>
+    </div>
+
+    <script>
+        const slides = document.querySelector('.slides');
+        const images = document.querySelectorAll('.slides img');
+        const prevButton = document.getElementById('prev');
+        const nextButton = document.getElementById('next');
+
+        let index = 0;
+
+        function showSlide(i) {
+            index += i;
+            if (index < 0) {
+                index = images.length - 1;
+            } else if (index >= images.length) {
+                index = 0;
+            }
+            slides.style.transform = `translateX(${-index * 100}%)`;
+        }
+
+        prevButton.addEventListener('click', () => showSlide(-1));
+        nextButton.addEventListener('click', () => showSlide(1));
+    </script>
+</body>
+
+</html>
