@@ -14,13 +14,28 @@
             margin: 0;
             padding: 0;
             font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            /* Mengisi tinggi layar penuh */
+            background-color: #fff;
+            /* Warna latar belakang untuk kontras */
         }
 
         .slider {
             position: relative;
             width: 100%;
-            max-width: 100%;
+            /* Lebar slider */
+            /* max-width: 800px; */
+            /* Lebar maksimum */
             overflow: hidden;
+            /* border: 2px solid #ccc; */
+            /* Border untuk visualisasi */
+            /* border-radius: 10px; */
+            /* Sudut melengkung */
+            /* box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); */
+            /* Bayangan untuk efek depth */
         }
 
         .slides {
@@ -31,6 +46,8 @@
         .slides img {
             width: 100%;
             height: auto;
+            max-height: 100vh;
+            /* Membatasi tinggi gambar agar tidak melebihi layar */
             object-fit: cover;
         }
 
@@ -40,6 +57,7 @@
             width: 100%;
             display: flex;
             justify-content: space-between;
+            padding: 0 5px;
             transform: translateY(-50%);
         }
 
@@ -49,32 +67,32 @@
             color: white;
             padding: 10px;
             cursor: pointer;
+            border-radius: 30%;
+            /* Tombol bulat */
+            font-size: 18px;
+        }
+
+        .navigation button:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+            /* Efek hover */
         }
 
         @media (min-width: 768px) {
+            .slides img {
+                min-width: 100vw;
+                object-fit: contain;
+            }
             .navigation button {
                 padding: 15px;
+                font-size: 24px;
             }
         }
 
         @media (min-width: 1024px) {
             .slides img {
-                width: 100%;
-                max-width: 1024px;
-                /* Sesuaikan dengan lebar maksimum yang diinginkan untuk breakpoint lg */
-                margin: 0 auto;
-                /* Untuk membuat gambar tetap di tengah */
-            }
-
-            .navigation button {
-                padding: 20px;
-            }
-        }
-
-        @media (min-width: 1280px) {
-            .slides img {
-                max-width: 1280px;
-                /* Sesuaikan dengan lebar maksimum yang diinginkan untuk breakpoint xl */
+                min-height: 100vh;
+                object-fit: contain;
+                /* Sesuaikan tinggi gambar untuk layar besar */
             }
         }
     </style>
@@ -83,10 +101,11 @@
 <body>
     <div class="slider">
         <div class="slides">
-            <img src="./asset/image/ChaHaeIn.jpg" alt="cha hae in">
-            <img src="./asset/image/ChaHaeIn2.jpg" alt="cha hae in">
-            <img src="./asset/image/ChaHaeIn3.jpg" alt="cha hae in">
-            <img src="./asset/image/ChaHaeIn4.jpg" alt="cha hae in">
+            <img src="./asset/image/page1.jpg" alt="Slide 1">
+            <img src="./asset/image/page2.jpg" alt="Slide 2">
+            <img src="./asset/image/page3.jpg" alt="Slide 3">
+            <img src="./asset/image/page4.jpg" alt="Slide 4">
+            <img src="./asset/image/page5.jpg" alt="Slide 5">
         </div>
         <div class="navigation">
             <button id="prev">&#10094;</button>
@@ -101,6 +120,8 @@
         const nextButton = document.getElementById('next');
 
         let index = 0;
+        let startX = 0;
+        let isDragging = false;
 
         function showSlide(i) {
             index += i;
@@ -114,6 +135,58 @@
 
         prevButton.addEventListener('click', () => showSlide(-1));
         nextButton.addEventListener('click', () => showSlide(1));
+
+        // Touch events
+        slides.addEventListener('touchstart', (e) => {
+            startX = e.touches[0].clientX;
+            isDragging = true;
+        });
+
+        slides.addEventListener('touchmove', (e) => {
+            if (!isDragging) return;
+            const currentX = e.touches[0].clientX;
+            const diff = startX - currentX;
+            if (Math.abs(diff) > 50) {
+                if (diff > 0) {
+                    showSlide(1);
+                } else {
+                    showSlide(-1);
+                }
+                isDragging = false;
+            }
+        });
+
+        slides.addEventListener('touchend', () => {
+            isDragging = false;
+        });
+
+        // Mouse events
+        slides.addEventListener('mousedown', (e) => {
+            startX = e.clientX;
+            isDragging = true;
+        });
+
+        slides.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            const currentX = e.clientX;
+            const diff = startX - currentX;
+            if (Math.abs(diff) > 50) {
+                if (diff > 0) {
+                    showSlide(1);
+                } else {
+                    showSlide(-1);
+                }
+                isDragging = false;
+            }
+        });
+
+        slides.addEventListener('mouseup', () => {
+            isDragging = false;
+        });
+
+        slides.addEventListener('mouseleave', () => {
+            isDragging = false;
+        });
     </script>
 </body>
 
